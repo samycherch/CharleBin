@@ -10,6 +10,7 @@
  * @version   1.5.1
  * @category  Configuration
  * @package   PrivateBin
+ * @author    Sébastien SAUVAGE (sebsauvage.net)
  */
 
 namespace PrivateBin;
