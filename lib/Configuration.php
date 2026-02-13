@@ -33,7 +33,7 @@ class Configuration
     private $_configuration;
 
     /**
-     * default configuration
+     * Default configuration
      *
      * @var array
      */
