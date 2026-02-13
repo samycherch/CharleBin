@@ -8,6 +8,7 @@
  * @copyright 2012 Sébastien SAUVAGE (sebsauvage.net)
  * @license   https://www.opensource.org/licenses/zlib-license.php The zlib/libpng License
  * @version   1.5.1
+ * @category  Configuration
  */
 
 namespace PrivateBin;
