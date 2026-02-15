@@ -114,7 +114,7 @@ class Configuration
         $config     = array();
         $configPath = getenv('CONFIG_PATH');
         if ($configPath !== false && !empty($configPath)) {
-            $basePaths[] = $configPath;
+            $basePaths[] = $configPath
         }
         $basePaths[] = PATH . 'cfg';
         foreach ($basePaths as $basePath) {
