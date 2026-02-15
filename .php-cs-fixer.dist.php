@@ -1,12 +1,19 @@
 <?php
+
 $finder = (new PhpCsFixer\Finder())
-    ->in(DIR)
+    ->in(__DIR__)
+    ->exclude('vendor')
+    ->exclude('data')
+    ->exclude('log')
 ;
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PER-CS' => true,
-        '@PHP8x2Migration' => true,
+        '@PSR12' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'ordered_imports' => ['sort_algorithm' => 'alpha'],
+        'no_unused_imports' => true,
+        'trailing_comma_in_multiline' => true,
     ])
     ->setFinder($finder)
 ;
