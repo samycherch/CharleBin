@@ -1,7 +1,25 @@
-# Ignore data/
-/data/
-doc/*
-!doc/*.md
-vendor
-log
+# Dépendances
+vendor/
+
+# Configuration locale
+cfg/conf.php
+
+# Logs et données
+log/
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Linters cache
+.php-cs-fixer.cache
+.phpcs-cache
 .phpunit.result.cache
