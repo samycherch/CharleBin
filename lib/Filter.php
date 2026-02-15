@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PrivateBin
  *
@@ -34,20 +35,25 @@ class Filter
      */
     public static function formatHumanReadableTime($time)
     {
-        if (preg_match('/^(\d+) *(\w+)$/', $time, $matches) !== 1) {
-            throw new Exception("Error parsing time format '$time'", 30);
+        $units = [
+            's' => I18n::_('second'),
+            'm' => I18n::_('minute'),
+            'h' => I18n::_('hour'),
+            'd' => I18n::_('day'),
+            'w' => I18n::_('week'),
+            'M' => I18n::_('month'),
+            'y' => I18n::_('year'),
+        ];
+        if (preg_match('/^(\d+)([smhdwMy])$/', $time, $matches)) {
+            $value = (int)$matches[1];
+            $unit  = $matches[2];
+            if ($value > 1) {
+                $units[$unit] .= 's';
+            }
+            return sprintf(I18n::_('%d %s'), $value, $units[$unit]);
+        } else {
+            throw new Exception('Invalid time format');
         }
-        switch ($matches[2]) {
-            case 'sec':
-                $unit = 'second';
-                break;
-            case 'min':
-                $unit = 'minute';
-                break;
-            default:
-                $unit = rtrim($matches[2], 's');
-        }
-        return I18n::_(array('%d ' . $unit, '%d ' . $unit . 's'), (int) $matches[1]);
     }
 
     /**
@@ -60,7 +66,7 @@ class Filter
      */
     public static function formatHumanReadableSize($size)
     {
-        $iec = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB');
+        $iec = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
         $i   = 0;
         while (($size / 1024) >= 1) {
             $size = $size / 1024;
