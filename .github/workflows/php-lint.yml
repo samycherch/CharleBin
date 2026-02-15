@@ -1,0 +1,50 @@
+name: PHP Code Quality
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Lint PHP Code
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, xmlwriter
+        coverage: none
+        
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+        
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+      
+    - name: Run PHP Lint
+      run: find . -type f -name '*.php' -not -path './vendor/*' -not -path './data/*' -not -path './log/*' -exec php -l {} \;
+      
+    - name: Run PHP CodeSniffer
+      run: ./vendor/bin/phpcs --extensions=php --standard=PSR12 ./lib
+      continue-on-error: true
+      
+    - name: Run PHP Mess Detector
+      run: ./vendor/bin/phpmd ./lib ansi codesize,unusedcode,naming
+      
+    - name: Run PHP CS Fixer (check only)
+      run: ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff
